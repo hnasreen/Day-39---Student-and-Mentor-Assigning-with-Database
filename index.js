@@ -1,12 +1,16 @@
 // index.js
 const express = require('express');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+// Load environment variables from .env file
+dotenv.config();
 
 const app = express();
 app.use(express.json()); // Built-in middleware to parse JSON bodies
 
-// Connect to MongoDB without options
-mongoose.connect('mongodb+srv://hnasreen1993:N22480418s@mongodb1.mqllmd1.mongodb.net/mentors_students_db');
+// Connect to MongoDB using environment variable
+mongoose.connect(process.env.MONGODB_URI);
 
 // Define Mentor and Student schemas
 const Mentor = mongoose.model('Mentor', { name: String, email: String });
@@ -115,7 +119,8 @@ app.get('/previous-mentor/:studentId', async (req, res) => {
     }
 });
 
-// Start the server
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+// Start the server using environment variable
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
